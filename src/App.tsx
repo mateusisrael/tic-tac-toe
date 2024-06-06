@@ -1,4 +1,3 @@
-import './App.css'
 import { MatchScreen } from './screens/Match'
 
 function App() {
