@@ -1,0 +1,35 @@
+{
+  "name": "tic-tac-toe-api",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Mateus Israel",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/index.ts",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
+    "@types/socket.io": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-import-helpers": "^1.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.4.1",
+    "ts-jest": "^29.1.2",
+    "ts-node-dev": "^2.0.0"
+  },
+  "keywords": [],
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "typescript": "^5.4.5"
+  }
+}
