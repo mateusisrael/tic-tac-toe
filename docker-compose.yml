@@ -1,0 +1,33 @@
+services: 
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+
+    container_name: 3t-api
+    ports:
+      - 3001:3001
+
+    volumes:
+      - .:/usr/src/api
+    
+    # network_mode: host
+    restart: always
+
+
+  app:
+    build: 
+      context: ./react-app
+      dockerfile: Dockerfile
+    container_name: 3t-app
+    ports:
+      - 3000:3000
+
+    volumes:
+      - .:/usr/src/app
+
+    depends_on:
+      - api
+    
+    network_mode: host
+    restart: always
