@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import * as S from './style'
 import Confetti from 'react-confetti'
+import { socket } from "../../socketConfig"
 
 
 type BoardObject = {
@@ -26,6 +27,14 @@ export const Board = () => {
   const [turn, setTurn] = useState<"X" | "O">("X")
   const [winner, setWinner] = useState<string | undefined>(undefined)
   const [draw, setDraw] = useState(false)
+
+  useEffect(() => {
+    socket.on('game_movement', (snapshot: Board) => {
+      console.log('Update Board', snapshot, positions)
+      gameMovement(snapshot)
+    })
+  }, [])
+
 
   const checkWin = (board: Board): 'X' | 'O' | undefined => {
     const size = 3;
@@ -78,13 +87,20 @@ export const Board = () => {
   const [positions, setPositions] = useState<Board>(INITIAL_BOARD_OBJ)
 
   useEffect(() => {
-    const winner = checkWin(positions)
+    setTurn(prev => prev === "X" ? "O" : "X")
+  }, [positions])
+
+  const gameMovement = (board: Board) => {
+
+    const winner = checkWin(board)
+
     if(winner) {
       setWinner(winner)
-      return
     }
-    if(checkDraw(positions)) setDraw(true)
-  }, [positions])
+    if(checkDraw(board)) setDraw(true)
+
+    setPositions([...board])
+  }
 
   const handleSelectSquare = (rowPosition: number, columnPosition: number) => {
     const board = positions;
@@ -93,8 +109,8 @@ export const Board = () => {
       selected: true,
       highlighter: turn
     }
-
-    setPositions([...board])
+    gameMovement(board)
+    socket.emit('game_movement', positions)
     setTurn(prev => prev === "X" ? "O" : "X")
   }
 
@@ -132,7 +148,7 @@ export const Board = () => {
 
   return (
     <S.BoardScreenContainer>
-      {winner ? <Confetti height={window.innerHeight} tweenDuration={10000} recycle={false} numberOfPieces={400}/> : null}
+      {winner ? <Confetti height={window.innerHeight} width={window.innerWidth} tweenDuration={10000} recycle={false} numberOfPieces={400}/> : null}
       <div className="board-winner">
         <S.InfoBox>
           {draw && !winner ? (
